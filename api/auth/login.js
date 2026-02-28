@@ -35,7 +35,7 @@ export default async function handler(req, res) {
       serialize("auth", user.id.toString(), {
         httpOnly: true,
         secure: true,
-        sameSite: "none",
+        sameSite: "lax",
         path: "/",
       })
     )
