@@ -24,7 +24,7 @@ export function Navbar() {
                 <Sparkles className="w-5 h-5" />
               </div>
               <span className="font-display text-2xl font-bold tracking-tight text-foreground">
-                Cloud Cluthes
+                Cloudy Clutches
               </span>
             </Link>
           </div>

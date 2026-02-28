@@ -54,7 +54,7 @@ export default function Checkout() {
           </div>
           <h1 className="font-display text-4xl font-bold mb-4">Order Placed Successfully!</h1>
           <p className="text-lg text-muted-foreground max-w-md mx-auto mb-8">
-            Thank you for shopping with Cloud Cluthes. We will review your payment and process your order shortly.
+            Thank you for shopping with Cloudy Clutches. We will review your payment and process your order shortly.
           </p>
           <Link href="/">
             <Button className="rounded-full px-8 py-6 text-lg">Continue Shopping</Button>

@@ -38,7 +38,7 @@ export default function AdminLogin() {
             <Sparkles className="w-7 h-7" />
           </div>
           <h1 className="font-display text-3xl font-bold text-foreground">Admin Portal</h1>
-          <p className="text-muted-foreground mt-2 text-center">Manage your Cloud Cluthes store</p>
+          <p className="text-muted-foreground mt-2 text-center">Manage your Cloudy Clutches store</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
