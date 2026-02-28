@@ -31,13 +31,14 @@ export default async function handler(req, res) {
     }
 
     res.setHeader(
-      "Set-Cookie",
-      serialize("auth", user.id.toString(), {
+    "Set-Cookie",
+    serialize("auth", user.id.toString(), {
         httpOnly: true,
         secure: true,
         sameSite: "lax",
         path: "/",
-      })
+        maxAge: 60 * 60 * 24, // 1 day
+    })
     )
 
     return res.status(200).json({ message: "Login successful" })
