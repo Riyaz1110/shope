@@ -7,11 +7,11 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 
 export function Navbar() {
-  const cartItemsCount = useCartStore((state) => state.totalItems());
-  const cartItems = useCartStore((state) => state.items);
-  const removeItem = useCartStore((state) => state.removeItem);
-  const updateQuantity = useCartStore((state) => state.updateQuantity);
-  const totalPrice = useCartStore((state) => state.totalPrice());
+    const totalPrice = useCartStore((state) => state.totalPrice);
+    const cartItemsCount = useCartStore((state) => state.totalItems());
+    const cartItems = useCartStore((state) => state.items);
+    const removeItem = useCartStore((state) => state.removeItem);
+    const updateQuantity = useCartStore((state) => state.updateQuantity);
 
   return (
     <header className="sticky top-0 z-50 w-full glass">
