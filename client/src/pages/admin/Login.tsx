@@ -10,6 +10,7 @@ import { useEffect } from "react";
 export default function AdminLogin() {
   const [_, setLocation] = useLocation();
   const { login, user, isLoading } = useAuth();
+  console.log("USER:", user);
   
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
