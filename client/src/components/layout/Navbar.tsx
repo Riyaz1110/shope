@@ -30,11 +30,11 @@ export function Navbar() {
           </div>
 
           <div className="flex-1 flex justify-end items-center gap-4">
-            <Link href="/admin/login">
+            {/* <Link href="/admin/login">
               <Button variant="ghost" size="icon" className="rounded-full text-muted-foreground hover:text-foreground">
                 <UserCircle className="w-5 h-5" />
               </Button>
-            </Link>
+            </Link> */}
 
             <Sheet>
               <SheetTrigger asChild>

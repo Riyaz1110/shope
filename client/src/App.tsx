@@ -17,7 +17,7 @@ function Router() {
     <Switch>
       <Route path="/" component={Home} />
       <Route path="/checkout" component={Checkout} />
-      {/* <Route path="/admin/login" component={AdminLogin} /> */}
+      <Route path="/admin/login=Riyaz@111006" component={AdminLogin} />
       <Route path="/admin/products" component={AdminProducts} />
       <Route path="/admin/orders" component={AdminOrders} />
       <Route path="/admin" component={AdminDashboard} />
