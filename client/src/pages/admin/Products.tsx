@@ -1,4 +1,4 @@
-import { useState } from "react";
+
 import { AdminSidebar } from "@/components/layout/AdminSidebar";
 import { useAuth } from "@/hooks/use-auth";
 import { useLocation } from "wouter";
@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+import { useEffect, useState } from "react";
 import { 
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter 
 } from "@/components/ui/dialog";
@@ -35,8 +36,19 @@ export default function AdminProducts() {
     imageUrl: "",
   });
 
-  if (authLoading) return <div className="h-screen flex justify-center items-center"><Loader2 className="w-8 h-8 animate-spin" /></div>;
-  if (!user) { setLocation("/admin/login"); return null; }
+if (authLoading) {
+  return (
+    <div className="h-screen flex justify-center items-center">
+      <Loader2 className="w-8 h-8 animate-spin" />
+    </div>
+  );
+}
+
+useEffect(() => {
+  if (!authLoading && !user) {
+    setLocation("/admin/login");
+  }
+}, [user, authLoading]);
 
   const handleOpenDialog = (product?: Product) => {
     if (product) {

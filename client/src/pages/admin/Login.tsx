@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Sparkles, Loader2 } from "lucide-react";
+import { useEffect } from "react";
 
 export default function AdminLogin() {
   const [_, setLocation] = useLocation();
@@ -12,12 +13,13 @@ export default function AdminLogin() {
   
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-
-  if (isLoading) return null;
+  useEffect(() => {
   if (user) {
     setLocation("/admin");
-    return null;
   }
+  }, [user]);
+  if (isLoading) return null;
+ 
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
