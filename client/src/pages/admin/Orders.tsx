@@ -45,92 +45,105 @@ export default function AdminOrders() {
         <div className="bg-card rounded-2xl border border-border/50 shadow-sm overflow-hidden">
           <Table>
             <TableHeader className="bg-muted/30">
-              <TableRow className="hover:bg-transparent">
-                <TableHead>Order ID</TableHead>
-                <TableHead>Date</TableHead>
-                <TableHead>Customer</TableHead>
-                <TableHead>Total</TableHead>
-                <TableHead>UPI ID</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead className="text-right">Actions</TableHead>
-              </TableRow>
-            </TableHeader>
+  <TableRow className="hover:bg-transparent">
+    <TableHead>Order ID</TableHead>
+    <TableHead>Date</TableHead>
+    <TableHead>Customer</TableHead>
+    <TableHead>Address</TableHead>
+    <TableHead>Total</TableHead>
+    <TableHead>UPI ID</TableHead>
+    <TableHead>Status</TableHead>
+    <TableHead className="text-right">Actions</TableHead>
+  </TableRow>
+</TableHeader>
             <TableBody>
               {isLoading ? (
                 <TableRow>
-                  <TableCell colSpan={7} className="h-32 text-center">
+                  <TableCell colSpan={8} className="h-32 text-center">
                     <Loader2 className="w-6 h-6 animate-spin mx-auto text-primary" />
                   </TableCell>
                 </TableRow>
               ) : !orders?.length ? (
                 <TableRow>
-                  <TableCell colSpan={7} className="h-32 text-center text-muted-foreground">
+                  <TableCell colSpan={8} className="h-32 text-center text-muted-foreground">
                     No orders yet.
                   </TableCell>
                 </TableRow>
               ) : (
                 orders.map((order) => (
-                  <TableRow key={order.id}>
-                    <TableCell className="font-medium">#{order.id.toString().padStart(4, '0')}</TableCell>
-                    <TableCell>{order.createdAt ? format(new Date(order.createdAt), "MMM d, yyyy") : "-"}</TableCell>
-                    <TableCell>
-                      <div>
-                        <p className="font-medium">{order.customerName}</p>
-                        <p className="text-xs text-muted-foreground">{order.mobileNumber}</p>
-                      </div>
-                    </TableCell>
-                    <TableCell className="font-bold">₹{order.totalAmount}</TableCell>
-                    <TableCell>
-                      <div className="flex items-center gap-2">
-                        <span className="text-sm font-mono bg-muted px-2 py-1 rounded">{order.upiTransactionId}</span>
-                        {order.screenshotUrl && (
-                          <Dialog>
-                            <DialogTrigger asChild>
-                              <Button variant="ghost" size="icon" className="h-6 w-6 rounded-full hover:text-primary">
-                                <FileImage className="w-4 h-4" />
-                              </Button>
-                            </DialogTrigger>
-                            <DialogContent className="sm:max-w-md">
-                              <DialogHeader>
-                                <DialogTitle>Payment Screenshot</DialogTitle>
-                              </DialogHeader>
-                              <div className="mt-4 rounded-xl overflow-hidden border border-border">
-                                <img src={order.screenshotUrl} alt="Payment Receipt" className="w-full h-auto" />
-                              </div>
-                            </DialogContent>
-                          </Dialog>
-                        )}
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <Badge className={STATUS_COLORS[order.status] || "bg-muted"}>
-                        {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
-                      </Badge>
-                    </TableCell>
-                    <TableCell className="text-right">
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button variant="ghost" size="icon" className="rounded-lg">
-                            <MoreHorizontal className="w-4 h-4" />
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end" className="w-40 rounded-xl">
-                          <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground uppercase tracking-wider">Update Status</div>
-                          {STATUS_OPTIONS.map(status => (
-                            <DropdownMenuItem 
-                              key={status}
-                              onClick={() => updateStatus.mutate({ id: order.id, status })}
-                              disabled={order.status === status}
-                              className="capitalize cursor-pointer"
-                            >
-                              {status}
-                            </DropdownMenuItem>
-                          ))}
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    </TableCell>
-                  </TableRow>
-                ))
+  <TableRow key={order.id}>
+    <TableCell className="font-medium">
+      #{order.id.toString().padStart(4, "0")}
+    </TableCell>
+
+    <TableCell>
+      {order.createdAt
+        ? format(new Date(order.createdAt), "MMM d, yyyy")
+        : "-"}
+    </TableCell>
+
+    <TableCell>
+      <div>
+        <p className="font-medium">{order.customerName}</p>
+        <p className="text-xs text-muted-foreground">
+          {order.mobileNumber}
+        </p>
+      </div>
+    </TableCell>
+
+    {/* ADDRESS COLUMN */}
+    <TableCell className="max-w-[220px]">
+      <p className="text-sm break-words">
+        {order.address ? order.address : "-"}
+      </p>
+    </TableCell>
+
+    {/* TOTAL COLUMN */}
+    <TableCell className="font-bold">
+      ₹{order.totalAmount}
+    </TableCell>
+
+    {/* UPI COLUMN */}
+    <TableCell>
+      <span className="text-sm font-mono bg-muted px-2 py-1 rounded">
+        {order.upiTransactionId}
+      </span>
+    </TableCell>
+
+    {/* STATUS COLUMN */}
+    <TableCell>
+      <Badge className={STATUS_COLORS[order.status] || "bg-muted"}>
+        {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
+      </Badge>
+    </TableCell>
+
+    {/* ACTION COLUMN */}
+    <TableCell className="text-right">
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="ghost" size="icon">
+            <MoreHorizontal className="w-4 h-4" />
+          </Button>
+        </DropdownMenuTrigger>
+
+        <DropdownMenuContent align="end">
+          {STATUS_OPTIONS.map((status) => (
+            <DropdownMenuItem
+              key={status}
+              onClick={() =>
+                updateStatus.mutate({ id: order.id, status })
+              }
+              disabled={order.status === status}
+              className="capitalize"
+            >
+              {status}
+            </DropdownMenuItem>
+          ))}
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </TableCell>
+  </TableRow>
+))
               )}
             </TableBody>
           </Table>

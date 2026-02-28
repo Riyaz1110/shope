@@ -11,14 +11,15 @@ import { Card, CardContent } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { QrCode, ArrowLeft, ShieldCheck } from "lucide-react";
 import { Link } from "wouter";
-
+import { QRCodeSVG } from "qrcode.react";
 export default function Checkout() {
+
   const [_, setLocation] = useLocation();
   const { toast } = useToast();
   const cartItems = useCartStore((state) => state.items);
   const totalPrice = useCartStore((state) => state.totalPrice());
   const clearCart = useCartStore((state) => state.clearCart);
-  
+  const upiLink = `upi://pay?pa=nishu01suba-2@okhdfcbank&pn=Cloud Clutches&am=${totalPrice.toFixed(2)}&cu=INR`;
   const createOrder = useCreateOrder();
 
   const [formData, setFormData] = useState({
@@ -77,7 +78,7 @@ export default function Checkout() {
 
     createOrder.mutate({
       ...formData,
-      totalAmount: totalPrice().toString(),
+      totalAmount: totalPrice.toString(),
       items: cartItems.map(item => ({
         productId: item.product.id,
         quantity: item.quantity,
@@ -165,10 +166,18 @@ export default function Checkout() {
                   <div className="bg-primary/5 rounded-2xl p-6 flex flex-col items-center justify-center border border-primary/10">
                     <div className="bg-white p-4 rounded-xl shadow-sm mb-4">
                       {/* Placeholder for UPI QR Code - in a real app this would be a real QR */}
-                      <QrCode className="w-48 h-48 text-foreground/80" />
+                      <div className="bg-white p-4 rounded-xl shadow-sm mb-4">
+                        <QRCodeSVG
+                          value={upiLink}
+                          size={192}
+                          bgColor="#ffffff"
+                          fgColor="#000000"
+                          level="H"
+                        />
+                      </div>
                     </div>
                     <p className="font-medium text-lg">UPI ID: cloudcluthes@upi</p>
-                    <p className="text-sm text-muted-foreground mt-1">Amount to pay: <span className="font-bold text-primary">₹{totalPrice().toFixed(2)}</span></p>
+                    <p className="text-sm text-muted-foreground mt-1">Amount to pay: <span className="font-bold text-primary">₹{totalPrice.toFixed(2)}</span></p>
                   </div>
                   
                   <div className="space-y-4">
@@ -230,7 +239,7 @@ export default function Checkout() {
                 <div className="border-t border-primary/20 pt-6 space-y-3">
                   <div className="flex justify-between text-muted-foreground">
                     <span>Subtotal</span>
-                    <span>₹{totalPrice().toFixed(2)}</span>
+                    <span>₹{totalPrice.toFixed(2)}</span>
                   </div>
                   <div className="flex justify-between text-muted-foreground">
                     <span>Shipping</span>
@@ -238,7 +247,7 @@ export default function Checkout() {
                   </div>
                   <div className="flex justify-between items-center pt-3 border-t border-primary/20 mt-3">
                     <span className="font-bold text-lg">Total</span>
-                    <span className="font-display font-bold text-3xl text-primary">₹{totalPrice().toFixed(2)}</span>
+                    <span className="font-display font-bold text-3xl text-primary">₹{totalPrice.toFixed(2)}</span>
                   </div>
                 </div>
 

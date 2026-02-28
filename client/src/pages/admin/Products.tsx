@@ -127,18 +127,48 @@ export default function AdminProducts() {
                 <div className="space-y-2">
                   <Label>Image URL (Unsplash/Static)</Label>
                   <div className="flex gap-2">
-                    <Input 
+                    <Input
                       value={formData.imageUrl}
-                      onChange={e => setFormData({...formData, imageUrl: e.target.value})}
-                      required 
-                      placeholder="https://images.unsplash.com/..."
+                      onChange={(e) => {
+                        const value = e.target.value.trim();
+                        let finalUrl = value;
+
+                        if (value.includes("drive.google.com")) {
+                          let fileId = "";
+
+                          const fileMatch = value.match(/\/file\/d\/([^\/]+)/);
+                          const idMatch = value.match(/[?&]id=([^&]+)/);
+
+                          if (fileMatch) {
+                            fileId = fileMatch[1];
+                          } else if (idMatch) {
+                            fileId = idMatch[1];
+                          }
+
+                          if (fileId) {
+                            finalUrl = `https://drive.google.com/uc?export=view&id=${fileId}`;
+                          }
+                        }
+
+                        setFormData({ ...formData, imageUrl: finalUrl });
+                      }}
+                      required
+                      placeholder="Paste Google Drive or Image URL"
                       className="rounded-xl"
                     />
                     {formData.imageUrl && (
-                      <div className="w-10 h-10 rounded-lg overflow-hidden shrink-0 border border-border">
-                        <img src={formData.imageUrl} className="w-full h-full object-cover" alt="Preview" />
-                      </div>
-                    )}
+                    <div className="w-10 h-10 rounded-lg overflow-hidden shrink-0 border border-border">
+                      <img
+                        src={formData.imageUrl}
+                        className="w-full h-full object-cover"
+                        alt="Preview"
+                        onError={(e) => {
+                          e.currentTarget.src =
+                            "https://via.placeholder.com/150?text=No+Image";
+                        }}
+                      />
+                    </div>
+                  )}
                   </div>
                 </div>
                 
