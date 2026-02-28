@@ -2,14 +2,14 @@ import { neon } from "@neondatabase/serverless";
 import { parse } from "cookie";
 
 export default async function handler(req, res) {
-  const cookies = parse(req.headers.cookie || "");
-  const userId = cookies.auth;
-
-  if (!userId) {
-    return res.status(401).json({ message: "Unauthorized" });
-  }
-
   try {
+    const cookies = parse(req.headers.cookie || "");
+    const userId = cookies.auth;
+
+    if (!userId || userId === "undefined" || userId === "null") {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
     const sql = neon(process.env.DATABASE_URL);
 
     const users = await sql`
@@ -26,6 +26,6 @@ export default async function handler(req, res) {
 
   } catch (err) {
     console.error(err);
-    return res.status(500).json({ message: "Server error" });
+    return res.status(401).json({ message: "Unauthorized" });
   }
 }

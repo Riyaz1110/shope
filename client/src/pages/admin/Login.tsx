@@ -5,22 +5,19 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Sparkles, Loader2 } from "lucide-react";
-import { useEffect } from "react";
 
 export default function AdminLogin() {
   const [_, setLocation] = useLocation();
   const { login, user, isLoading } = useAuth();
-  console.log("USER:", user);
   
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  useEffect(() => {
+
+  if (isLoading) return null;
   if (user) {
     setLocation("/admin");
+    return null;
   }
-  }, [user]);
-  if (isLoading) return null;
- 
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -41,7 +38,7 @@ export default function AdminLogin() {
             <Sparkles className="w-7 h-7" />
           </div>
           <h1 className="font-display text-3xl font-bold text-foreground">Admin Portal</h1>
-          <p className="text-muted-foreground mt-2 text-center">Manage your Cloudy Clutches store</p>
+          <p className="text-muted-foreground mt-2 text-center">Manage your Cloud Cluthes store</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
