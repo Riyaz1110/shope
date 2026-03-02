@@ -17,12 +17,15 @@ export async function registerRoutes(
 ): Promise<Server> {
 
   app.use(session({
-    secret: process.env.SESSION_SECRET || 'cloudcluthes-secret',
-    resave: false,
-    saveUninitialized: false,
-    store: new SessionStore({ checkPeriod: 86400000 }),
-    cookie: { secure: false }
-  }));
+  secret: process.env.SESSION_SECRET || 'cloudcluthes-secret',
+  resave: false,
+  saveUninitialized: false,
+  store: new SessionStore({ checkPeriod: 86400000 }),
+  cookie: {
+    secure: process.env.NODE_ENV === "production",
+    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax"
+  }
+}));
 
   const requireAuth = (req: any, res: any, next: any) => {
     if (!req.session.userId) {
